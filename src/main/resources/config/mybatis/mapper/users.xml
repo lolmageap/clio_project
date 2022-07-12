@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="u">
+	<!-- mapper : DB에 쿼리문을 요청하고 결과를 돌려받는 속성파일, ';' 사용하지 않는다. -->
+	<!-- select문을 사용할때 항상 resultType을 작성해주어야 한다. -->
+
+	<!-- 회원가입 조회 -->
+	<select id="users_list" resultType="vo.UsersVO">
+		select * from users
+	</select>
+
+	<!-- DB회원가입 정보 -->
+	<insert id="insert_list" parameterType="vo.UsersVO">
+		insert into users values(user_seq.nextval,
+		#{user_id},
+		#{user_pwd},
+		#{user_name},
+		#{user_email},
+		#{user_addr},
+		#{user_tel}
+		)
+	</insert>
+	
+	<!-- 아이디 확인 -->
+	<select id="id_check" resultType="vo.UsersVO" parameterType="vo.UsersVO">
+    select user_id from users where user_id = #{user_id}
+ 	</select>
+ 	
+	<select id="pwd_check" resultType="vo.UsersVO" parameterType="vo.UsersVO">
+    select user_id from users where user_pwd = #{user_pwd}
+ 	</select>
+
+	<!-- 로그인 -->
+	<select id="login" resultType="vo.UsersVO" parameterType="vo.UsersVO">
+	select * from users where user_id = #{user_id} and user_pwd = #{user_pwd}
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- VisitDAO visit_daoBean = new VisitDAO() -->
+	<bean id="item_daoBean" class="dao.ItemDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+
+	<bean id="manager_daoBean" class="dao.ManagerDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+
+	<bean id="users_daoBean" class="dao.UsersDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+	
+	<bean id="mapapi_daoBean" class="dao.MapApiDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+	
+	<bean id="itemshow_daoBean" class="dao.ItemShowDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+	<bean id="basketline_daoBean" class="dao.BasketLineDAO">
+		<property name="sqlSession" ref="sqlSessionBean" />
+	</bean>
+</beans>
