@@ -2,6 +2,7 @@ package com.korea.shop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -94,7 +95,7 @@ public class UsersController {
 
 	@RequestMapping("/log_in.do")
 	@ResponseBody
-	public String log_in(UsersVO vo, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String log_in(UsersVO vo, HttpServletRequest request, Model model) {
 		
 		String user_id = request.getParameter("user_id");
 		String user_pwd = request.getParameter("user_pwd");
@@ -126,12 +127,31 @@ public class UsersController {
 		
 		//DB에 값이 있는지 확인
 		//있으면 넘어가고 없으면 값을 등록
-		//user_id를 이메일에서 @이후값 삭제후 등록
+		//user_id를 이메일 값으로 등록
 		//email은 중복 x
 		//그리고 다시 메인페이지로 변환
 		
+		UsersVO Ulist = new UsersVO();
 		
-		return MyCommon.VIEW_PATH + "users_insert.jsp";
+		Ulist.setUser_email(email);
+		Ulist.setUser_id(email);
+		Ulist.setUser_name(name);
+		
+		//랜덤 비밀번호 생성 후 비밀번호에 넣기
+		int ax = new Random().nextInt(1000000)+ 1000000;
+		Ulist.setUser_pwd(String.valueOf(ax));
+		
+		String res = users_dao.selectOne(Ulist); 
+		
+		if(res == null && res.isEmpty()) {
+			int put = users_dao.insert_kakao(Ulist); 
+			}
+
+		 HttpSession session = request.getSession();
+			session.setAttribute("Ulist", Ulist);
+			session.setMaxInactiveInterval(3600);
+		
+		return "item_list.do";
 		
 	}
 	

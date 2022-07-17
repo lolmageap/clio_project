@@ -48,5 +48,17 @@ public class UsersDAO {
 	}
 	
 	
+	  public String selectOne(UsersVO vo){
+	  String res = sqlSession.selectOne("u.selectOne",vo); 
+	  return res; 
+	  }
+	  
+	  public int insert_kakao(UsersVO vo){
+		  int res = sqlSession.insert("u.insert_kakao",vo); 
+		  return res; 
+	  }
+	 
+	
+	
 
 }

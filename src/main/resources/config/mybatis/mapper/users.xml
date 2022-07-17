@@ -37,5 +37,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select * from users where user_id = #{user_id} and user_pwd = #{user_pwd}
 	</select>
 	
+	<select id="selectOne" resultType="String" parameterType="vo.UsersVO">
+	select user_id from users where user_email = #{user_email}
+	</select>
+	
+	<insert id="insert_kakao" parameterType="vo.UsersVO">
+	insert into users values(user_seq.nextval,#{user_id},#{user_pwd},#{user_name},#{user_email},'','')
+	</insert>
 	
 </mapper>
