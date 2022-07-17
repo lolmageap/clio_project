@@ -12,10 +12,6 @@ public class UsersDAO {
 	SqlSession sqlSession;
 	
 	
-	//기본생성자
-	public UsersDAO() { 
-		System.out.println("--DAO 생성자--");
-	}
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}

@@ -34,10 +34,6 @@ public class UsersController {
 
 	UsersDAO users_dao;
 	
-	public UsersController() {
-		System.out.println("--controller 생성자--");
-	}
-	
 	public void setUsers_dao(UsersDAO users_dao) {
 		this.users_dao = users_dao;
 	}
@@ -123,6 +119,20 @@ public class UsersController {
 			
 	    return finRes;
 
+	}
+	
+	@RequestMapping("/oauth2.do")
+	public String oauth2(String name , String email) {
+		
+		//DB에 값이 있는지 확인
+		//있으면 넘어가고 없으면 값을 등록
+		//user_id를 이메일에서 @이후값 삭제후 등록
+		//email은 중복 x
+		//그리고 다시 메인페이지로 변환
+		
+		
+		return MyCommon.VIEW_PATH + "users_insert.jsp";
+		
 	}
 	
 }
