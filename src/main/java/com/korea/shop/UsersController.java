@@ -1,12 +1,21 @@
 package com.korea.shop;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.http.HttpSession;
 
 
@@ -18,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.UsersDAO;
 import util.MyCommon;
-import vo.ItemVO;
 import vo.UsersVO;
 
 @Controller
@@ -157,9 +165,56 @@ public class UsersController {
 		
 	}
 	
-	@RequestMapping("/example.do")
-	public String example() {
-		return MyCommon.VIEW_PATH + "example.jsp";
+	@RequestMapping("/NaverMailSend.do")
+	@ResponseBody
+	private String example(String user_email) {
+		
+		final String user = "ekxk1234@naver.com"; 
+		final String password = "wjd0322189!";
+		
+		String email = user_email;
+		int ax = new Random().nextInt(100000)+ 100000;
+		
+		System.setProperty("https.protocols", "TLSv1.2");
+		
+		Properties prop = new Properties();   
+        prop.put("mail.smtp.host", "smtp.naver.com");
+        prop.put("mail.smtp.port", "465");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.ssl.enable", "true");
+        prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
+        
+        Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, password);
+            }
+        });
+
+        
+        MimeMessage message = new MimeMessage(session);
+        
+        try {
+            message.setFrom(new InternetAddress(user));
+            
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            
+
+            // 메일 제목
+            message.setSubject("클리오샵에서 인증번호 발송~!");
+
+            // 메일 내용
+            message.setText(Integer.toString(ax));
+            
+            // send the message
+            Transport.send(message);
+
+        }catch (AddressException e) {
+            e.printStackTrace();
+        }  catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+		return "";
 	}
 	
 }
