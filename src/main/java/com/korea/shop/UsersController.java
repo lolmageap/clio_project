@@ -149,7 +149,7 @@ public class UsersController {
 		int ax = new Random().nextInt(1000000)+ 1000000;
 		Ulist.setUser_pwd(String.valueOf(ax));
 		
-		String res = users_dao.selectOne(Ulist); 
+		String res = users_dao.selectOne(email); 
 		
 		if(res != null && !res.isEmpty()) {
 			}
@@ -167,54 +167,69 @@ public class UsersController {
 	
 	@RequestMapping("/NaverMailSend.do")
 	@ResponseBody
-	private String example(String user_email) {
-		
-		final String user = "ekxk1234@naver.com"; 
-		final String password = "wjd0322189!";
+	private String example(String user_email , Model model) {
 		
 		String email = user_email;
+		String result = "no";
 		int ax = new Random().nextInt(100000)+ 100000;
 		
-		System.setProperty("https.protocols", "TLSv1.2");
+		String res = users_dao.selectOne(email);
 		
-		Properties prop = new Properties();   
-        prop.put("mail.smtp.host", "smtp.naver.com");
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.ssl.enable", "true");
-        prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
-        
-        Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, password);
-            }
-        });
-
-        
-        MimeMessage message = new MimeMessage(session);
-        
-        try {
-            message.setFrom(new InternetAddress(user));
-            
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-            
-
-            // 메일 제목
-            message.setSubject("클리오샵에서 인증번호 발송~!");
-
-            // 메일 내용
-            message.setText(Integer.toString(ax));
-            
-            // send the message
-            Transport.send(message);
-
-        }catch (AddressException e) {
-            e.printStackTrace();
-        }  catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-		return "";
+		if(res != null && !res.isEmpty()) {
+			result = "yes";
+		}
+		else {
+			
+			final String user = "ekxk1234@naver.com"; 
+			final String password = "wjd0322189!";
+			
+			
+			System.setProperty("https.protocols", "TLSv1.2");
+			
+			Properties prop = new Properties();   
+			prop.put("mail.smtp.host", "smtp.naver.com");
+			prop.put("mail.smtp.port", "465");
+			prop.put("mail.smtp.auth", "true");
+			prop.put("mail.smtp.ssl.enable", "true");
+			prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
+			
+			Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(user, password);
+				}
+			});
+			
+			MimeMessage message = new MimeMessage(session);
+			
+			try {
+				message.setFrom(new InternetAddress(user));
+				
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+				
+				
+				// 메일 제목
+				message.setSubject("클리오샵에서 인증번호 발송~!");
+				
+				// 메일 내용
+				message.setText(Integer.toString(ax));
+				
+				// send the message
+				Transport.send(message);
+				
+			}catch (AddressException e) {
+				e.printStackTrace();
+			}  catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			
+			}
+		
+		model.addAttribute("ax", ax);
+		
+		String finRes= String.format("[{'result':'%s'}]",result);
+		
+	    return finRes;
+		
 	}
 	
 }

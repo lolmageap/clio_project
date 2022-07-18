@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select * from users where user_id = #{user_id} and user_pwd = #{user_pwd}
 	</select>
 	
-	<select id="selectOne" resultType="String" parameterType="vo.UsersVO">
+	<select id="selectOne" resultType="String" parameterType="String">
 	select user_id from users where user_email = #{user_email}
 	</select>
 	

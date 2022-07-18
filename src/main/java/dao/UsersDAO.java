@@ -48,8 +48,8 @@ public class UsersDAO {
 	}
 	
 	
-	  public String selectOne(UsersVO vo){
-	  String res = sqlSession.selectOne("u.selectOne",vo); 
+	  public String selectOne(String email){
+	  String res = sqlSession.selectOne("u.selectOne",email); 
 	  return res; 
 	  }
 	  
