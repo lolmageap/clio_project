@@ -143,9 +143,11 @@ public class UsersController {
 		
 		String res = users_dao.selectOne(Ulist); 
 		
-		if(res == null && res.isEmpty()) {
-			int put = users_dao.insert_kakao(Ulist); 
+		if(res != null && !res.isEmpty()) {
 			}
+		else{
+			int put = users_dao.insert_kakao(Ulist); 
+		}
 
 		 HttpSession session = request.getSession();
 			session.setAttribute("Ulist", Ulist);
@@ -153,6 +155,11 @@ public class UsersController {
 		
 		return "item_list.do";
 		
+	}
+	
+	@RequestMapping("/example.do")
+	public String example() {
+		return MyCommon.VIEW_PATH + "example.jsp";
 	}
 	
 }
