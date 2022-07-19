@@ -1,11 +1,16 @@
 package vo;
 
 public class UsersVO {
-	private int user_idx;
+	private int user_idx , user_number;
 	private String user_id,user_pwd,user_name,user_email,user_addr,user_tel, user_addr1, user_addr2, user_addr3 , user_data;
 	
 	
-	
+	public int getUser_number() {
+		return user_number;
+	}
+	public void setUser_number(int user_number) {
+		this.user_number = user_number;
+	}
 	public String getUser_addr1() {
 		return user_addr1;
 	}

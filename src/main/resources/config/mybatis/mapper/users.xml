@@ -45,4 +45,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	insert into users values(user_seq.nextval,#{user_id},#{user_pwd},#{user_name},#{user_email},'','')
 	</insert>
 	
+	<select id="view_email" resultType="String" parameterType="String">
+	select user_email from user_number where user_email = #{user_email}
+	</select>
+
+	<delete id="del_email" parameterType="String">
+	delete from user_number where user_email = #{user_email}
+	</delete>
+	
+	<insert id="ins_num" parameterType="vo.UsersVO">
+	insert into user_number values(#{user_email},#{user_number})
+	</insert>
+	
+	<select id="select_num" resultType="String" parameterType="vo.UsersVO">
+	select user_email from user_number where user_email = #{user_email} and user_number = #{user_number}
+	</select>
 </mapper>

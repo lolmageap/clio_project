@@ -100,7 +100,8 @@ public class UsersController {
 		return MyCommon.VIEW_PATH + "users_insert.jsp";
 		
 	}
-
+	
+	//로그인
 	@RequestMapping("/log_in.do")
 	@ResponseBody
 	public String log_in(UsersVO vo, HttpServletRequest request, Model model) {
@@ -130,6 +131,7 @@ public class UsersController {
 
 	}
 	
+	//OAUTH 로그인 
 	@RequestMapping("/oauth2.do")
 	public String oauth2(String name , String email) {
 		
@@ -165,9 +167,10 @@ public class UsersController {
 		
 	}
 	
+	//인증번호 발송 및 이메일 인증
 	@RequestMapping("/NaverMailSend.do")
 	@ResponseBody
-	private String example(String user_email , Model model) {
+	private String example(String user_email) {
 		
 		String email = user_email;
 		String result = "no";
@@ -216,17 +219,58 @@ public class UsersController {
 				// send the message
 				Transport.send(message);
 				
+				UsersVO uservo = new UsersVO();
+				uservo.setUser_number(ax);
+				uservo.setUser_email(email);
+				
+				//조회 값 있으면 지우고 insert
+				String cnum = users_dao.view_email(email);
+				
+				if(cnum!= null && !cnum.isEmpty()) {
+					//지우고 insert
+					int del = users_dao.del_email(email);
+					int ins = users_dao.ins_num(uservo);
+				}
+				else {
+					//insert
+					int ins = users_dao.ins_num(uservo);
+				}
+				
 			}catch (AddressException e) {
 				e.printStackTrace();
 			}  catch (MessagingException e) {
 				e.printStackTrace();
 			}
 			
-			}
-		
-		model.addAttribute("ax", ax);
+		}
 		
 		String finRes= String.format("[{'result':'%s'}]",result);
+		
+	    return finRes;
+	}
+	
+	//인증번호 확인
+	@RequestMapping("/number_check.do")
+	@ResponseBody
+	public String number_check( String user_email , int user_number) {
+		
+		System.out.println(user_number);
+		
+		UsersVO uvo = new UsersVO();
+		uvo.setUser_number(user_number);
+		uvo.setUser_email(user_email);
+		
+		String results = "no";
+		
+		//인증번호 확인
+		String res = users_dao.select_num(uvo);
+		
+		// 확인 완료
+		if(res != null && !res.isEmpty()) {
+			results = "yes";
+		}
+		
+		String finRes= String.format("[{'results':'%s'}]",results);
 		
 	    return finRes;
 		

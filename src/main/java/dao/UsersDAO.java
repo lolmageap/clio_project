@@ -47,18 +47,38 @@ public class UsersDAO {
 		return list;
 	}
 	
-	
+	// users 테이블의 이메일 조회
 	  public String selectOne(String email){
 	  String res = sqlSession.selectOne("u.selectOne",email); 
 	  return res; 
 	  }
 	  
-	  public int insert_kakao(UsersVO vo){
+	 // users 테이블에 oauth2 로그인 정보 주입
+	 public int insert_kakao(UsersVO vo){
 		  int res = sqlSession.insert("u.insert_kakao",vo); 
 		  return res; 
-	  }
+	 }
 	 
+	 // user_number 테이블에 이메일 조회
+	 public String view_email(String email){
+		  String res = sqlSession.selectOne("u.view_email",email); 
+		  return res; 
+	 }
 	
-	
+	 public int del_email(String email){
+		 int res = sqlSession.delete("u.del_email",email); 
+		 return res; 
+	 }
+	 
+	 public int ins_num(UsersVO vo){
+		 int res = sqlSession.delete("u.ins_num", vo); 
+		 return res; 
+	 }
+	 
+	 public String select_num(UsersVO vo){
+		 String res = sqlSession.selectOne("u.select_num", vo); 
+		 return res; 
+	 }
+	 
 
 }

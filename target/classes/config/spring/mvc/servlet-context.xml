@@ -17,10 +17,8 @@
 		<beans:property name="item_dao" ref="item_daoBean" />
 	</beans:bean>
 
-	<beans:bean id="ManagerController"
-		class="com.korea.shop.ManagerController">
-		<beans:property name="manager_dao"
-			ref="manager_daoBean" />
+	<beans:bean id="ManagerController" class="com.korea.shop.ManagerController">
+		<beans:property name="manager_dao" ref="manager_daoBean" />
 	</beans:bean>
 
 	<context:annotation-config />
