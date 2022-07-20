@@ -80,5 +80,10 @@ public class UsersDAO {
 		 return res; 
 	 }
 	 
+	 public int update_user(UsersVO vo){
+		 int res = sqlSession.insert("u.update_user", vo); 
+		 return res; 
+	 }
+	 
 
 }

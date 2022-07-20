@@ -90,7 +90,7 @@ public class UsersController {
 	@RequestMapping("/users_insert.do") //id=aaaa&pwd=1111&name=홍길동....
 	public String insert1(Model model, UsersVO vo, String user_addr1, String user_addr2, String user_addr3) {
 		
-		vo.setUser_addr(user_addr1 + user_addr2 + user_addr3);
+		vo.setUser_addr(user_addr1 + " " + user_addr2 + " " + user_addr3);
 		
 		List<UsersVO> list = users_dao.insert_list(vo);
 		
@@ -274,6 +274,24 @@ public class UsersController {
 		
 	    return finRes;
 		
+	}
+	
+	// 배송지 정보 입력
+	@RequestMapping("update_user.do")
+	@ResponseBody
+	public String order_page(String user_id , String user_addr1, String user_addr2, String user_addr3 , String user_tel) {
+		
+		UsersVO vo = new UsersVO();
+		vo.setUser_addr(user_addr1 + " " + user_addr2 + " " + user_addr3);
+		vo.setUser_tel(user_tel);
+		vo.setUser_id(user_id);
+		
+		System.out.println(vo.getUser_addr());
+		System.out.println(vo.getUser_tel());
+		
+		int res = users_dao.update_user(vo);
+		
+		return "";
 	}
 	
 }

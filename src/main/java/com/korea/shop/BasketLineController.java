@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.BasketLineDAO;
 import util.MyCommon;
@@ -139,7 +140,5 @@ public class BasketLineController {
 
 		return MyCommon.VIEW_PATH+"basket_status.jsp";
 	}
-	
-	
 	
 }
