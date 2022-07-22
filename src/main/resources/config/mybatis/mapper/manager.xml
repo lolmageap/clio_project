@@ -62,8 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="select_order" resultType="vo.OrderVO">
-		select * from users u, order_item o where u.user_id = o.user_id
-		order by order_date desc
+		select USER_IDX	,u.USER_ID,USER_PWD,USER_NAME,USER_EMAIL,USER_ADDR,USER_TEL,ITEM_ID,
+		ITEM_NAME,ITEM_SIZE,ITEM_COLOR,ITEM_PRICE,ITEM_COUNT,FILE_NAME,TO_CHAR(ORDER_DATE, 'YYYY-MM-DD') as order_date
+		from users u, order_item o where u.user_id = o.user_id order by order_date desc
 	</select>
 	
 </mapper>

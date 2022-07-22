@@ -1,7 +1,6 @@
 package com.korea.shop;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -14,12 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import dao.ItemDAO;
 import dao.ManagerDAO;
 import util.MyCommon;
-import vo.ItemVO;
 import vo.ManagerVO;
 import vo.OrderVO;
+
 
 @Controller
 public class ManagerController {
@@ -59,6 +57,7 @@ public class ManagerController {
 	public String update_form() {
 		return MyCommon.VIEW_PATH+"manager_update_form.jsp";
 	}
+	
 	@RequestMapping("manager_update.do")
 	public String update(ManagerVO vo) {
 		
@@ -182,17 +181,38 @@ public class ManagerController {
 		return "redirect:manager_list.do";
 	}
 	
+	// 주문 현황
 	@RequestMapping("manager_basket_list.do")
 	public String manager_basket_list(Model model) {
 		
+		OrderVO vo = new OrderVO();
+		
 		List<OrderVO> m_b_list = manager_dao.select_order();
 		
-		model.addAttribute("m_b_list", m_b_list);
+		
+		try {
+			for(int i = 0 ; i < m_b_list.size(); i++){	
+				
+				//조회된 주문 날짜가 최신 순으로 정렬되어있다
+				//정렬 되어 있는 리스트에서 날짜가 바뀔 때 리스트에 인덱스 add
+					
+					if(!m_b_list.get(i).getOrder_date().equals(m_b_list.get(i+1).getOrder_date())) {
+						
+						//이렇게 하면 다음 날짜에 다음이라는 글이 들어간 vo를 list에 추가함
+						//오늘 올라온 것만 이제 다음이라는 글을 넣기 (최신 날짜추가)
+						vo.setUser_email("no");
+						m_b_list.add(i+1,vo);
+						
+				}
+					//카운트가 들어가서 페이지에 뿌릴 때 foreach문을 사용하여 뿌리면 됨
+			}
+		} catch (Exception e) {
+			
+		}
+		
+			model.addAttribute("m_b_list", m_b_list);
 		
 		return MyCommon.VIEW_PATH+"manager_basket_list.jsp";
 	}
 	
-	
-
-
 }

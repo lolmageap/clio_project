@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     select user_id from users where user_id = #{user_id}
  	</select>
  	
+ 	<!-- 비밀번호 확인 -->
 	<select id="pwd_check" resultType="vo.UsersVO" parameterType="vo.UsersVO">
     select user_id from users where user_pwd = #{user_pwd}
  	</select>
@@ -37,22 +38,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select * from users where user_id = #{user_id} and user_pwd = #{user_pwd}
 	</select>
 	
+	<!-- 이메일 값 입력시 아이디 반환 -->
 	<select id="selectOne" resultType="String" parameterType="String">
 	select user_id from users where user_email = #{user_email}
 	</select>
 	
+	<!-- oauth 로그인 -->
 	<insert id="insert_kakao" parameterType="vo.UsersVO">
 	insert into users values(user_seq.nextval,#{user_id},#{user_pwd},#{user_name},#{user_email},'','')
 	</insert>
 	
+	<!-- 이메일 중복체크 -->
 	<select id="view_email" resultType="String" parameterType="String">
 	select user_email from user_number where user_email = #{user_email}
 	</select>
 
+	<!-- 이메일 삭제 -->
 	<delete id="del_email" parameterType="String">
 	delete from user_number where user_email = #{user_email}
 	</delete>
 	
+	<!-- 인증번호를 DB에 추가 -->
 	<insert id="ins_num" parameterType="vo.UsersVO">
 	insert into user_number values(#{user_email},#{user_number})
 	</insert>

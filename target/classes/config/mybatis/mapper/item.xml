@@ -4,73 +4,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="i">
 
-	<select id="item_list" resultType="item">
-		select i.item_id, i.item_name, i.item_price, i.file_name , i.item_type
-		from item i order by i.item_id desc
-	</select>
+		<select id="item_list" resultType="item">
+			select i.item_id, i.item_name, i.item_price, i.file_name , i.item_type from item i order by i.item_id desc
+		</select>
+		
+		<select id="item_list_top" resultType="item">
+			select item_id, item_name, item_price, file_name from item where item_type = '상의' order by item_id desc
+		</select> 
+		
+		<select id="item_list_outer" resultType="item">
+			select item_id, item_name, item_price, file_name from item where item_type = '아우터' order by item_id desc
+		</select> 
+		
+		<!--  -->
+		<select id="item_list_pants" resultType="item">
+			select item_id, item_name, item_price, file_name from item where item_type = '하의' order by item_id desc
+		</select> 
+		
+		<!-- 악세사리 조회 정렬 -->
+		<select id="item_list_jewelry" resultType="item">
+			select item_id, item_name, item_price, file_name from item where item_type = '악세사리' order by item_id desc
+		</select> 
 	
-	<select id="item_list_top" resultType="item">
-		select item_id, item_name, item_price, file_name 
-		from item
-		where item_type = '상의'
-		order by item_id desc
-	</select> 
-	<select id="item_list_outer" resultType="item">
-		select item_id, item_name, item_price, file_name 
-		from item
-		where item_type = '아우터'
-		order by item_id desc
-	</select> 
-	<select id="item_list_pants" resultType="item">
-		select item_id, item_name, item_price, file_name 
-		from item
-		where item_type = '하의'
-		order by item_id desc
-	</select> 
-	<select id="item_list_jewelry" resultType="item">
-		select item_id, item_name, item_price, file_name 
-		from item
-		where item_type = '악세사리'
-		order by item_id desc
-	</select> 
+		<!-- 전체 검색 -->
+		<select id="item_search1" resultType="item" parameterType="String">
+			select distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
+			where i.item_id = c.item_id and i.item_id = s.item_id
+			and (i.item_name like '%'|| #{item_name} ||'%' or c.item_color like '%'|| #{item_name} ||'%')
+			order by i.item_id
+		</select>
+		
+		<!-- 상품명 검색 -->
+		<select id="item_search2" resultType="item" parameterType="String">
+			select  distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
+			where i.item_id = c.item_id and i.item_id = s.item_id
+			and i.item_name like '%'|| #{item_name} ||'%'
+			order by i.item_id
+		</select>
+	
+		<!-- 색상 검색 -->
+		<select id="item_search3" resultType="item"
+			parameterType="String">
+			select  distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
+			where i.item_id = c.item_id and i.item_id = s.item_id
+			and c.item_color like '%'|| #{item_name} ||'%'
+			order by i.item_id
+		</select>
 
-	<select id="item_search1" resultType="item" parameterType="String">
-		select distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
-		where i.item_id = c.item_id and i.item_id = s.item_id
-		and (i.item_name like '%'|| #{item_name} ||'%' or c.item_color like '%'|| #{item_name} ||'%')
-		order by i.item_id
-	</select>
-	
-	<select id="item_search2" resultType="item" parameterType="String">
-		select  distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
-		where i.item_id = c.item_id and i.item_id = s.item_id
-		and i.item_name like '%'|| #{item_name} ||'%'
-		order by i.item_id
-	</select>
-	
-	<select id="item_search3" resultType="item"
-		parameterType="String">
-		select  distinct i.item_id, i.item_name, i.file_name, i.item_type, i.item_price from item i , color c, item_size s
-		where i.item_id = c.item_id and i.item_id = s.item_id
-		and c.item_color like '%'|| #{item_name} ||'%'
-		order by i.item_id
-	</select>
-
+		<!-- 아이템 클릭 시 상품 구입 페이지로 가져감 -->
 		<select id="buy_item" resultType="item" parameterType="int">
 		select item_id, item_name, item_price, file_name , item_type
 		from item where item_id = #{item_id}
 		</select>
 		
+		<!-- 사이즈 조회 -->
 		<select id="buy_item_size" resultType="item" parameterType="int">
 		select item_size
 		from item_size where item_id = #{item_id}
 		</select>
 		
+		<!-- 색상 조회 -->
 		<select id="buy_item_color" resultType="item" parameterType="int">
-		select item_color
-		from color where item_id = #{item_id}
+		select item_color from color where item_id = #{item_id}
 		</select>
 		
+		<!-- 임시 테이블에 넣기 전 아이템 조인 -->
 		<select id="sum_item" resultType="item" parameterType="item">
 		select distinct i.item_id, i.item_name, i.item_type, c.item_color , s.item_size from
 		item i , item_size s , color c where
@@ -78,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and i.item_id = #{item_id} and s.item_size = #{item_size} and c.item_color = #{item_color}
 		</select>
 
+		<!-- 임시 테이블에 넣기 -->
 		<insert id="insert_temp" parameterType="item">
 		insert into temp values (
 		temp_seq.nextval , #{item_id} , #{item_name}, #{item_size} ,
@@ -94,11 +93,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		group by item_id , user_id, item_name, item_size, item_color, item_price , file_name
 		</select>
 		
-		
+		<!-- 임시 테이블 삭제 -->
 		<delete id="delete_temp" parameterType="item">
 		delete from temp where item_id = #{item_id} and user_id = #{user_id} and item_color = #{item_color} and item_size = #{item_size}
 		</delete>
 		
+		<!-- 장바구니에 넣기 -->
 		<insert id="insert_basket" parameterType="item">
 		insert into basket values (
 		basket_seq.nextval , #{item_id} , #{user_id} , #{item_name}, #{item_size} , #{item_color} , #{item_price} , #{item_count} , #{file_name}
