@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dao.ItemDAO;
 import util.MyCommon;
-import vo.FakeVO;
 import vo.ItemVO;
 
 @Controller
@@ -66,9 +65,13 @@ public class ItemController {
 
 		List<ItemVO> vo = new ArrayList<ItemVO>();
 
-		if (item_name.contains("검")) {
+		if (item_name.contains("검정")) {
+			item_name = "black";
+		} else if (item_name.contains("검은")) {
 			item_name = "black";
 		} else if (item_name.contains("흰")) {
+			item_name = "white";
+		} else if (item_name.contains("하양")) {
 			item_name = "white";
 		} else if (item_name.contains("하늘")) {
 			item_name = "skyblue";
@@ -97,11 +100,9 @@ public class ItemController {
 		}
 
 		if (vo.isEmpty()) {
-			FakeVO ivo = new FakeVO();
-			ivo.setItem_name("검색 결과가 없습니다 다시 검색 해주세요");
-			List<FakeVO> avo = new ArrayList<FakeVO>();
-			avo.add(ivo);
-			model.addAttribute("avo", avo);
+			
+			String none = "검색 결과가 없습니다 다시 검색 해주세요";
+			model.addAttribute("none", none);
 		} else {
 			model.addAttribute("vo", vo);
 		}
