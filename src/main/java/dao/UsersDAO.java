@@ -65,23 +65,33 @@ public class UsersDAO {
 		  return res; 
 	 }
 	
+	 // 이메일 지우기
 	 public int del_email(String email){
 		 int res = sqlSession.delete("u.del_email",email); 
 		 return res; 
 	 }
 	 
+	 // 인증번호 지우기
 	 public int ins_num(UsersVO vo){
 		 int res = sqlSession.delete("u.ins_num", vo); 
 		 return res; 
 	 }
 	 
+	 // 인증번호 조회
 	 public String select_num(UsersVO vo){
 		 String res = sqlSession.selectOne("u.select_num", vo); 
 		 return res; 
 	 }
 	 
+	 // 유저 정보 변경
 	 public int update_user(UsersVO vo){
 		 int res = sqlSession.insert("u.update_user", vo); 
+		 return res; 
+	 }
+	 
+	 // 주소지 가져오기
+	 public String select_addr(String user_id){
+		 String res = sqlSession.selectOne("u.select_addr", user_id); 
 		 return res; 
 	 }
 	 

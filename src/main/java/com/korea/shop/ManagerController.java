@@ -36,7 +36,7 @@ public class ManagerController {
 		this.manager_dao = manager_dao;
 	}
 	
-	
+	//관리자 페이지로 이동
 	@RequestMapping("manager_list.do")
 	public String list(Model model) {
 		List<ManagerVO> list = manager_dao.selectList();
@@ -46,18 +46,19 @@ public class ManagerController {
 		return MyCommon.VIEW_PATH+"manager_list.jsp";
 	}
 	
-	//등록
+	//등록 페이지로 이동
 	@RequestMapping("manager_insert_form.do")
 	public String insert_form() {
 		return MyCommon.VIEW_PATH+"manager_insert_form.jsp";
 	}
 	
-	//수정
+	//수정 페이지로 이동
 	@RequestMapping("manager_update_form.do")
 	public String update_form() {
 		return MyCommon.VIEW_PATH+"manager_update_form.jsp";
 	}
 	
+	//수정
 	@RequestMapping("manager_update.do")
 	public String update(ManagerVO vo) {
 		
@@ -94,7 +95,7 @@ public class ManagerController {
 		return "redirect:manager_list.do";
 	}
 	
-	//삭제
+	//삭제 페이지로 이동
 	@RequestMapping("manager_delete_form.do")
 	public String delete_form() {
 		return MyCommon.VIEW_PATH+"manager_delete_form.jsp";
@@ -124,10 +125,8 @@ public class ManagerController {
 		return "redirect:manager_list.do";
 	}
 	
-	
 	//등록
 	@RequestMapping("manager_insert.do")
-	
 	public String insert(ManagerVO vo) {
 		int item_like = 0;
 		vo.setItem_like(item_like);
@@ -165,6 +164,7 @@ public class ManagerController {
 		return "redirect:manager_list.do";
 	}
 	
+	//사이즈 등록
 	@RequestMapping("size_insert.do")
 	public String size_insert(ManagerVO vo) {
 		
@@ -173,6 +173,7 @@ public class ManagerController {
 		return "redirect:manager_list.do";
 	}
 	
+	//컬러 등록
 	@RequestMapping("color_insert.do")
 	public String color_insert(ManagerVO vo) {
 		
@@ -189,9 +190,24 @@ public class ManagerController {
 		
 		List<OrderVO> m_b_list = manager_dao.select_order();
 		
+		//리스트에서 & 값을 공백으로 전환
+		//이 작업을 하지않으면 "04583 & 서울 중구 난계로 125 & 떡볶이" 이런식으로 값이 출력됨
+		for(int i = 0 ; i < m_b_list.size(); i++){	
+		String res = m_b_list.get(i).getUser_addr();
+		String a = res.substring(res.indexOf("&")+1);
+		
+		String addr1 = res.substring(0,res.indexOf("&"));
+		String addr2 = a.substring(0,a.indexOf("&"));
+		String addr3 = a.substring(a.indexOf("&")+1);
+		String addr = addr1 + " " + addr2 + " " + addr3;
+		m_b_list.get(i).setUser_addr(addr);
+		}
 		
 		try {
+			
 			for(int i = 0 ; i < m_b_list.size(); i++){	
+				
+
 				
 				//조회된 주문 날짜가 최신 순으로 정렬되어있다
 				//정렬 되어 있는 리스트에서 날짜가 바뀔 때 리스트에 인덱스 add

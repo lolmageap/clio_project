@@ -19,7 +19,8 @@ public class MapApiController {
 	public void setMapapi_dao(MapApiDAO mapapi_dao) {
 		this.mapapi_dao = mapapi_dao;
 	}
-	
+
+	//지도 api
 	@RequestMapping("mapapi.do")
 	public String list(Model model) {
 		List<ManagerVO> list = mapapi_dao.selectList();

@@ -110,6 +110,7 @@ public class BasketLineController {
 		return MyCommon.VIEW_PATH+"basket_line.jsp";
 	}
 	
+	//결제 완료 시
 	@RequestMapping("order_items.do")
 	public String order_items(Model model, HttpServletRequest request ,ItemVO vo) {
 		
@@ -127,6 +128,7 @@ public class BasketLineController {
 		return MyCommon.VIEW_PATH+"basket_line.jsp";
 	}
 	
+	//사용자 주문 확인 페이지
 	@RequestMapping("order_page.do")
 	public String order_page(Model model, HttpServletRequest request ,ItemVO vo) {
 		

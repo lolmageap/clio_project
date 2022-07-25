@@ -13,6 +13,7 @@ public class MapApiDAO {
 		this.sqlSession = sqlSession;
 	}
 	
+	// 지도 api
 	public List<ManagerVO> selectList(){
 		List<ManagerVO> list = sqlSession.selectList("map.mapapi");
 		return list;

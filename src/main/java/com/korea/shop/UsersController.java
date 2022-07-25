@@ -1,6 +1,7 @@
 package com.korea.shop;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -90,7 +91,7 @@ public class UsersController {
 	@RequestMapping("/users_insert.do") //id=aaaa&pwd=1111&name=홍길동....
 	public String insert1(Model model, UsersVO vo, String user_addr1, String user_addr2, String user_addr3) {
 		
-		vo.setUser_addr(user_addr1 + " " + user_addr2 + " " + user_addr3);
+		vo.setUser_addr(user_addr1 + "&" + user_addr2 + "&" + user_addr3);
 		
 		List<UsersVO> list = users_dao.insert_list(vo);
 		
@@ -118,7 +119,8 @@ public class UsersController {
 	    }
 	    
 		if(Ulist.getUser_id().equals("aaaa")) {
-			Ulist.setUser_data("<i style=\"position: fixed;\" onclick=\"location.href='manager_list.do'\" class=\"gear fa-solid fa-gear fa-2x\"></i>");			
+			Ulist.setUser_data("<i style=\"position: fixed;\" onclick=\"location.href"
+					+ "='manager_list.do'\" class=\"gear fa-solid fa-gear fa-2x\"></i>");			
 		}
 	    
 	    HttpSession session = request.getSession();
@@ -135,11 +137,8 @@ public class UsersController {
 	@RequestMapping("/oauth2.do")
 	public String oauth2(String name , String email) {
 		
-		//DB에 값이 있는지 확인
-		//있으면 넘어가고 없으면 값을 등록
-		//user_id를 이메일 값으로 등록
-		//email은 중복 x
-		//그리고 다시 메인페이지로 변환
+		//DB에 값이 있는지 확인하고 있으면 넘어가고 없으면 값을 등록
+		//user_id를 이메일 값으로 등록 , email은 중복 x ,그리고 다시 메인페이지로 변환
 		
 		UsersVO Ulist = new UsersVO();
 		
@@ -164,7 +163,6 @@ public class UsersController {
 			session.setMaxInactiveInterval(3600);
 		
 		return "item_list.do";
-		
 	}
 	
 	//인증번호 발송 및 이메일 인증
@@ -254,8 +252,6 @@ public class UsersController {
 	@ResponseBody
 	public String number_check( String user_email , int user_number) {
 		
-		System.out.println(user_number);
-		
 		UsersVO uvo = new UsersVO();
 		uvo.setUser_number(user_number);
 		uvo.setUser_email(user_email);
@@ -282,16 +278,51 @@ public class UsersController {
 	public String order_page(String user_id , String user_addr1, String user_addr2, String user_addr3 , String user_tel) {
 		
 		UsersVO vo = new UsersVO();
-		vo.setUser_addr(user_addr1 + " " + user_addr2 + " " + user_addr3);
+		vo.setUser_addr(user_addr1 + "&" + user_addr2 + "&" + user_addr3);
 		vo.setUser_tel(user_tel);
 		vo.setUser_id(user_id);
-		
-		System.out.println(vo.getUser_addr());
-		System.out.println(vo.getUser_tel());
 		
 		int res = users_dao.update_user(vo);
 		
 		return "";
+	}
+	
+	// 기존 배송지 불러오기
+	@RequestMapping("select_addr.do")
+	@ResponseBody
+	public List<String> select_addr(String user_id , Model model) {
+		
+		
+		String ud = users_dao.select_addr(user_id);
+		
+		String result = "no";
+		String addr1 = "";
+		String addr2 = "";
+		String addr3 = "";
+		UsersVO vo = new UsersVO();
+		
+		if(ud != null && !ud.isEmpty()) {
+			String res = ud;
+			String a = res.substring(res.indexOf("&")+1);
+			
+			addr1 = res.substring(0,res.indexOf("&")).trim();
+			addr2 = a.substring(0,a.indexOf("&")).trim();
+			addr3 = a.substring(a.indexOf("&")+1).trim();
+
+			model.addAttribute("addr1", addr1);
+			model.addAttribute("addr2", addr2);
+			model.addAttribute("addr3", addr3);
+			
+			result = "yes";
+		}
+		
+		List<String> finRes = new ArrayList<String>();
+		finRes.add(result);
+		finRes.add(addr1);
+		finRes.add(addr2);
+		finRes.add(addr3);
+		
+	    return finRes;
 	}
 	
 }
